@@ -50,15 +50,17 @@
             <td class="px-2 py-2 border border-slate-300">
               <input
                 type="number"
-                class="w-full border border-gray-300 rounded p-2"
-                value="0"
+                class="w-full border border-gray-300 rounded p-2 debit-input text-end"
+                value="1000"
+                onchange="updateDebitTotal()"
               />
             </td>
             <td class="px-2 py-2 border border-slate-300">
               <input
                 type="number"
-                class="w-full border border-gray-300 rounded p-2"
-                value="0"
+                class="w-full border border-gray-300 rounded p-2 credit-input text-end"
+                value="1000"
+                onchange="updateCreditTotal()"
               />
             </td>
             <td class="px-2 py-2 border border-slate-300">
@@ -70,12 +72,96 @@
 
         // Append the new row to the table body
         tbody.appendChild(newRow);
+        updateDeleteButtons();
+        updateDebitTotal();
+        updateCreditTotal();
       }
 
       function removeRow(button) {
         // Remove the row containing the clicked button
         button.closest("tr").remove();
+        // Update delete button states after removing a row
+        updateDeleteButtons();
+        updateDebitTotal();
+        updateCreditTotal();
       }
+
+      function updateDeleteButtons() {
+        // Get all rows and delete buttons
+        const tbody = document.getElementById("voucherTableBody");
+        const rows = tbody.getElementsByTagName("tr");
+        const deleteButtons = tbody.querySelectorAll("button");
+
+        // Disable delete buttons if there are only 2 rows left, enable otherwise
+        if (rows.length <= 2) {
+          deleteButtons.forEach((button) => {
+            button.disabled = true;
+            button.classList.add("bg-gray-400", "cursor-not-allowed");
+            button.classList.remove("bg-red-500");
+          });
+        } else {
+          deleteButtons.forEach((button) => {
+            button.disabled = false;
+            button.classList.remove("bg-gray-400", "cursor-not-allowed");
+            button.classList.add("bg-red-500");
+          });
+        }
+      }
+
+      function updateDebitTotal() {
+        let total = 0;
+        const debitInputs = document.querySelectorAll(".debit-input");
+
+        // Sum up all debit values
+        debitInputs.forEach((input) => {
+          total += parseFloat(input.value) || 0;
+        });
+
+        // Display the total in the designated total field
+        document.getElementById("debitTotal").textContent = total.toFixed(2);
+        updateSaveButtonState();
+      }
+
+      function updateCreditTotal() {
+        let total = 0;
+        const debitInputs = document.querySelectorAll(".credit-input");
+
+        // Sum up all debit values
+        debitInputs.forEach((input) => {
+          total += parseFloat(input.value) || 0;
+        });
+
+        // Display the total in the designated total field
+        document.getElementById("creditTotal").textContent = total.toFixed(2);
+        updateSaveButtonState();
+      }
+
+      function updateSaveButtonState() {
+        const debitTotal = parseFloat(
+          document.getElementById("debitTotal").textContent
+        );
+        const creditTotal = parseFloat(
+          document.getElementById("creditTotal").textContent
+        );
+        const saveButton = document.getElementById("saveButton");
+
+        if (debitTotal === creditTotal) {
+          saveButton.disabled = false;
+          saveButton.classList.remove("bg-gray-400", "cursor-not-allowed");
+          saveButton.classList.add("bg-green-700");
+        } else {
+          saveButton.disabled = true;
+          saveButton.classList.add("bg-gray-400", "cursor-not-allowed");
+          saveButton.classList.remove("bg-green-700");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateDeleteButtons();
+        updateDebitTotal();
+        updateCreditTotal();
+        updateSaveButtonState();
+      });
     </script>
   </head>
   <body class="p-2 object-cover">
@@ -84,9 +170,12 @@
         <p class="self-center text-xl font-semibold text-gray-800">
           Create Voucher
         </p>
-        <div class="btn btn-primary bg-cyan-600 text-white px-2 py-1 rounded">
+        <button
+          class="btn btn-primary bg-cyan-600 text-white px-2 py-1 rounded"
+          onclick=""
+        >
           <i class="fa-solid fa-list pr-2"></i>Vouchers
-        </div>
+        </button>
       </div>
 
       <!-- before table  -->
@@ -157,65 +246,75 @@
                   <option>Service Income</option>
                 </select>
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="text"
                   class="w-full border border-gray-300 rounded p-2"
                   placeholder="Enter comment"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="number"
-                  class="w-full border border-gray-300 rounded p-2"
-                  value="10000"
+                  class="w-full border border-gray-300 rounded p-2 debit-input text-end"
+                  value="1000"
+                  oninput="updateDebitTotal()"
+                  onchange="updateDebitTotal()"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="number"
-                  class="w-full border border-gray-300 rounded p-2"
-                  value="0"
+                  class="w-full border border-gray-300 rounded p-2 credit-input text-end"
+                  value="1000"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
-                <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="removeRow(this)">
+              <td class="p-2 border border-slate-300">
+                <button
+                  class="bg-red-500 text-white px-3 py-1 rounded"
+                  onclick="removeRow(this)"
+                >
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
               </td>
             </tr>
             <!-- Row 2 -->
             <tr class="text-center">
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <select class="w-full border border-gray-300 rounded p-2">
                   <option>Cash</option>
                   <option>Sales Accounts</option>
                   <option>Service Income</option>
                 </select>
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="text"
                   class="w-full border border-gray-300 rounded p-2"
                   placeholder="Enter comment"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="number"
-                  class="w-full border border-gray-300 rounded p-2"
-                  value="10000"
+                  class="w-full border border-gray-300 rounded p-2 debit-input text-end"
+                  value="1000"
+                  onchange="updateDebitTotal()"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <input
                   type="number"
-                  class="w-full border border-gray-300 rounded p-2"
-                  value="0"
+                  class="w-full border border-gray-300 rounded p-2 credit-input text-end"
+                  value="1000"
+                  onchange="updateCreditTotal()"
                 />
               </td>
-              <td class="px-2 py-2 border border-slate-300">
-                <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="removeRow(this)">
+              <td class="p-2 border border-slate-300">
+                <button
+                  class="bg-red-500 text-white px-3 py-1 rounded"
+                  onclick="removeRow(this)"
+                >
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
               </td>
@@ -225,27 +324,40 @@
           <tfoot>
             <tr class="text-center font-semibold">
               <td class="p-2 border-slate-300 justify-start flex">
-                <button class="bg-green-700 text-white px-3 py-1 rounded" onclick="addRow()">
-                  <p>Add More</p>
+                <button
+                  class="bg-green-700 text-white px-3 py-1 rounded"
+                  onclick="addRow()"
+                >
+                  <p class="p-1">Add More</p>
                 </button>
               </td>
-              <td class="px-2 py-2 border border-slate-300">
+              <td class="p-2 border border-slate-300">
                 <p class="rounded text-right px-3">Total</p>
               </td>
-              <td class="px-2 py-2 border border-slate-300">
-                <p class="bg-gray-300 rounded text-right px-3">10000.00</p>
+              <td class="p-2 border border-slate-300">
+                <p
+                  id="debitTotal"
+                  class="bg-gray-300 rounded text-right p-2"
+                ></p>
               </td>
-              <td class="px-2 py-2 border border-slate-300">
-                <p class="bg-gray-300 rounded text-right px-3">10000.00</p>
+              <td class="p-2 border border-slate-300">
+                <p
+                  id="creditTotal"
+                  class="bg-gray-300 rounded text-right p-2"
+                ></p>
               </td>
-              <td class="px-2 py-2 border border-slate-300"></td>
+              <td class="p-2 border border-slate-300"></td>
             </tr>
           </tfoot>
         </table>
       </div>
 
       <div class="px-2 flex pb-5 justify-end">
-        <button class="bg-green-700 text-white px-3 py-1 rounded w-24">
+        <button
+          id="saveButton"
+          class="bg-green-700 text-white px-3 py-2 rounded w-24"
+          disabled
+        >
           Save
         </button>
       </div>
