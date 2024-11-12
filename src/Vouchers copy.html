@@ -111,37 +111,49 @@
   </head>
   <body class="p-2 object-cover my-5">
     <div class="container-lg mx-auto rounded-sm border-2">
-      <div
-        class="md:flex sm:flex-none justify-between align-middle p-1 bg-gray-200 m-1"
-      >
-        <p class="self-center text-xl font-semibold text-gray-800">Vouchers</p>
-        <div class="md:flex gap-2">
+      <div class="p-1 bg-gray-200 m-1 grid md:grid-cols-7 gap-4">
+        <span class="text-xl font-semibold text-gray-800 md:col-start-1 md:col-end-2 sm:col-start-1 sm:col-end-7"
+          >Vouchers</span
+        >
+        <button
+          class="bg-blue-600 md:col-start-4 md:col-end-5 sm:col-start-1 sm:col-end-2 text-white px-4 py-1 rounded"
+          onclick="window.location='CreateVoucher.html';"
+        >
+          <i class="fas fa-plus mr-2"></i>Create Voucher
+        </button>
+        <div class="md:col-start-5 md:col-end-6 sm:col-start-3 sm:col-end-5">
+          <select
+            class="border border-gray-300 rounded px-4 py-1 js-example-basic-single"
+          >
+            <option>Select Option</option>
+            <option>Debit Voucher</option>
+            <option>Credit Voucher</option>
+            <option>Journal Voucher</option>
+            <option>Contra Voucher</option>
+          </select>
+        </div>
+        <div class="md:col-start-6 md:col-end-7 sm:col-start-1 sm:col-end-7">
+          <select
+            class="border border-gray-300 rounded px-4 js-example-basic-single"
+          >
+            <option>Select Option</option>
+            <option>Debit Voucher</option>
+            <option>Credit Voucher</option>
+            <option>Journal Voucher</option>
+            <option>Contra Voucher</option>
+          </select>
+        </div>
+        <div class="col-start-7 col-end-8 flex justify-between">
           <button
-            class="bg-blue-600 text-white px-4 rounded md:flex-1 sm:flex-none items-center"
-            onclick="window.location='CreateVoucher.html';"
+            class="bg-green-500 text-white w-20 py-1 rounded"
           >
-            <i class="fas fa-plus mr-2"></i>Create Voucher
+            Search
           </button>
-          <select
-            class="border border-gray-300 rounded px-4 js-example-basic-single"
+          <button
+            class="bg-yellow-500 text-white w-20 py-1 rounded"
           >
-            <option>Select Option</option>
-            <option>Debit Voucher</option>
-            <option>Credit Voucher</option>
-            <option>Journal Voucher</option>
-            <option>Contra Voucher</option>
-          </select>
-          <select
-            class="border border-gray-300 rounded px-4 js-example-basic-single"
-          >
-            <option>Select Option</option>
-            <option>Debit Voucher</option>
-            <option>Credit Voucher</option>
-            <option>Journal Voucher</option>
-            <option>Contra Voucher</option>
-          </select>
-          <button class="bg-green-500 text-white px-4 rounded">Search</button>
-          <button class="bg-yellow-500 text-white px-4 rounded">Reset</button>
+            Reset
+          </button>
         </div>
       </div>
 
@@ -175,9 +187,7 @@
               <td class="p-1 border">15-01-2025</td>
               <td class="p-1 border">v3</td>
               <td class="p-1 border">1000</td>
-              <td class="p-1 border text-white">
-                <p class="bg-green-500 rounded py-1">Approved</p>
-              </td>
+              <td class="p-1 border text-white"><p class="bg-green-500 rounded py-1">Approved</p></td>
               <td class="p-1 border">
                 <button
                   id="viewVoucher"
@@ -217,15 +227,15 @@
 
         <!-- Modal Body -->
         <div class="px-4">
-          <img class="w-28" src="../images/logo/esqLogo.png" alt="logo" />
+          <img class="w-28" src="../images/logo/esqLogo.png" />
           <div class="flex align-middle justify-center">
             <p class="text-2xl"><strong>E-BIT Finance</strong></p>
           </div>
           <div class="flex align-middle justify-center">
             <p class="text-green-600">Approved Voucher</p>
           </div>
-          <div class="flex md:justify-end align-middle sm:justify-center">
-            <div class="md:block sm:flex sm:justify-center">
+          <div class="flex justify-end align-middle">
+            <div>
               <p>Voucher Number: jv_00001</p>
               <p>Date: 11/11/2024</p>
             </div>
@@ -261,12 +271,18 @@
                     <p class="rounded text-right px-3">Total</p>
                   </td>
                   <td class="border bg-gray-300">
-                    <p id="debitTotal" class="bg-gray-300 rounded p-1">
+                    <p
+                      id="debitTotal"
+                      class="bg-gray-300 rounded p-1"
+                    >
                       29000.00
                     </p>
                   </td>
                   <td class="border bg-gray-300">
-                    <p id="creditTotal" class="bg-gray-300 rounded p-1">
+                    <p
+                      id="creditTotal"
+                      class="bg-gray-300 rounded p-1"
+                    >
                       29000.00
                     </p>
                   </td>
@@ -309,12 +325,12 @@
           <button
             class="w-16 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-600"
           >
-            <i class="fa-solid fa-print"></i> Print
+          <i class="fa-solid fa-print"></i> Print
           </button>
           <button
             class="ml-3 w-16 py-1 bg-green-600 text-white rounded hover:bg-green-700"
           >
-            <i class="fa-solid fa-file-pdf"></i> PDF
+          <i class="fa-solid fa-file-pdf"></i> PDF
           </button>
           <button
             id="closeModalBtnFooter"
